@@ -12,7 +12,7 @@ const devConfig = {
 			directory: path.join(__dirname, '../dist'),
 		},
 		port: 3000,
-
+		open: 'chrome',
 		hot: true,
 	},
 	target: 'web',
