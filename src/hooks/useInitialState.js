@@ -17,8 +17,9 @@ const initialState = {
 		'ZXCVBNM,'.split(''),
 	],
 	active: '',
-	color: 'black',
-	grosor: 2,
+	color: 'red',
+	colorFondo: 'blue',
+	grosor: 4,
 };
 const useInitialState = () => {
 	const [state, setState] = useState(initialState);
@@ -82,6 +83,12 @@ const useInitialState = () => {
 			grosor: valor,
 		});
 	};
+	const updateColorFondo = (valor) => {
+		setState({
+			...state,
+			colorFondo: valor,
+		});
+	};
 
 	// LAPIZ:
 	return {
@@ -90,6 +97,7 @@ const useInitialState = () => {
 		toUpperCase,
 		updateCanvasPaleta,
 		updateColor,
+		updateColorFondo,
 		updateGrosor,
 	};
 };

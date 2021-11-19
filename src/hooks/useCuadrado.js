@@ -2,8 +2,8 @@ import { useState } from 'react';
 const initialStateCuadrado = {
 	active: false,
 	bordeEstado: true, // si tendra borde
-	bordeGrosor: 2,
-	bordeColor: 'black',
+	bordeGrosor: 5,
+	bordeColor: 'yellow',
 	fondoEstado: true, // si tendra fondo
 	fondoColor: 'black',
 	x_ini: 0,
@@ -35,10 +35,11 @@ const useCuadrado = () => {
 			bordeEstado: valor,
 		});
 	};
-	const updateCuadradoBordeColor = (valor) => {
+	const updateCuadradoBorde_ColorEstado = (color, estado) => {
 		setStateCuadrado({
 			...stateCuadrado,
-			bordeColor: valor,
+			bordeColor: color,
+			bordeEstado: estado,
 		});
 	};
 	const updateCuadradoFondoEstado = (valor) => {
@@ -47,10 +48,11 @@ const useCuadrado = () => {
 			fondoEstado: valor,
 		});
 	};
-	const updateCuadradoFondoColor = (valor) => {
+	const updateCuadradoFondo_ColorEstado = (color, estado) => {
 		setStateCuadrado({
 			...stateCuadrado,
-			fondoColor: valor,
+			fondoColor: color,
+			fondoEstado: estado,
 		});
 	};
 	// CREATE: ADD_IN:	historiaCuadrado[]
@@ -68,17 +70,34 @@ const useCuadrado = () => {
 			historialCuadrado: array,
 		});
 	};
+	const update_all = (
+		colorBorde,
+		colorFondo,
+		bordeGrosor,
+		bordeEstadoIn,
+		fondoEstadoIn
+	) => {
+		setStateCuadrado({
+			...stateCuadrado,
+			bordeColor: colorBorde,
+			fondoColor: colorFondo,
+			bordeGrosor: bordeGrosor,
+			bordeEstado: bordeEstadoIn,
+			fondoEstado: fondoEstadoIn,
+		});
+	};
 
 	return {
 		stateCuadrado,
 		updateCuadradoActive,
 		updateCuadradoBordeGrosor,
 		updateCuadradoBordeEstado,
-		updateCuadradoBordeColor,
+		updateCuadradoBorde_ColorEstado,
 		updateCuadradoFondoEstado,
-		updateCuadradoFondoColor,
+		updateCuadradoFondo_ColorEstado,
 		add_cuadrado_en_historia,
 		update_cuadrado_en_historia,
+		update_all,
 	};
 };
 

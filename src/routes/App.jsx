@@ -34,9 +34,9 @@ const App = () => {
 						<AppContextCuadrado.Provider value={initialStateCuadrado}>
 							<BrowserRouter>
 								<Layout>
-									<Routes>
-										{/* <Route exact path="/" element={<Home />} /> */}
-									</Routes>
+									{/* <Routes>
+										<Route exact path="/" element={<Home />} />
+									</Routes> */}
 								</Layout>
 							</BrowserRouter>
 						</AppContextCuadrado.Provider>

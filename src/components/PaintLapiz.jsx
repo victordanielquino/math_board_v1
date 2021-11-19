@@ -77,7 +77,9 @@ const PaintLapiz = (id_canvas) => {
 		context.closePath();
 	};
 	const mouseDownLapiz = (e) => {
-		mouse.click = true;
+		stateLapiz.grosor > 0
+			? (mouse.click = true)
+			: console.log('el grosor es 0.');
 		captura_Pos_Posprev(e);
 	};
 	const mouseMoveLapiz = (e) => {
