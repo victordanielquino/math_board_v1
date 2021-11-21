@@ -10,6 +10,7 @@ import MenuMover from '../containers/MenuMover';
 import MenuLapiz from '../containers/MenuLapiz';
 import MenuBorrador from '../containers/MenuBorrador';
 import MenuCuadrado from '../containers/MenuCuadrado';
+import MenuCuadricula from '../containers/MenuCuadricula';
 
 // context:
 import AppContext from '../context/AppContext';
@@ -27,6 +28,7 @@ const Header = () => {
 	const [toggleMenuLapiz, setToggleMenuLapiz] = useState(false);
 	const [toggleMenuBorrador, setToggleMenuBorrador] = useState(false);
 	const [toggleMenuCuadrado, setToggleMenuCuadrado] = useState(false);
+	const [toggleMenuCuadricula, setToggleMenuCuadricula] = useState(false);
 
 	useEffect(() => {
 		switch (state.active) {
@@ -36,6 +38,7 @@ const Header = () => {
 				setToggleMenuLapiz(false);
 				setToggleMenuBorrador(false);
 				setToggleMenuCuadrado(false);
+				setToggleMenuCuadricula(false);
 				break;
 			case 'lapizIcon':
 				setToggleMenu1(false);
@@ -43,6 +46,7 @@ const Header = () => {
 				setToggleMenuLapiz(true);
 				setToggleMenuBorrador(false);
 				setToggleMenuCuadrado(false);
+				setToggleMenuCuadricula(false);
 				break;
 			case 'borradorIcon':
 				setToggleMenu1(false);
@@ -50,6 +54,7 @@ const Header = () => {
 				setToggleMenuLapiz(false);
 				setToggleMenuBorrador(true);
 				setToggleMenuCuadrado(false);
+				setToggleMenuCuadricula(false);
 				break;
 			case 'cuadradoIcon':
 				setToggleMenu1(false);
@@ -57,6 +62,15 @@ const Header = () => {
 				setToggleMenuLapiz(false);
 				setToggleMenuBorrador(false);
 				setToggleMenuCuadrado(true);
+				setToggleMenuCuadricula(false);
+				break;
+			case 'cuadriculaIcon':
+				setToggleMenu1(false);
+				setToggleMenuMover(false);
+				setToggleMenuLapiz(false);
+				setToggleMenuBorrador(false);
+				setToggleMenuCuadrado(false);
+				setToggleMenuCuadricula(true);
 				break;
 			default:
 				setToggleMenu1(true);
@@ -64,6 +78,7 @@ const Header = () => {
 				setToggleMenuLapiz(false);
 				setToggleMenuBorrador(false);
 				setToggleMenuCuadrado(false);
+				setToggleMenuCuadricula(false);
 				break;
 		}
 	}, [state]);
@@ -83,6 +98,7 @@ const Header = () => {
 				{toggleMenuLapiz && <MenuLapiz />}
 				{toggleMenuBorrador && <MenuBorrador />}
 				{toggleMenuCuadrado && <MenuCuadrado />}
+				{toggleMenuCuadricula && <MenuCuadricula />}
 			</div>
 			<div className="navbar-right">
 				<ul>

@@ -22,6 +22,15 @@ const PaintCuadrado = (id_canvas) => {
 		x_fin: 0,
 		y_fin: 0,
 	};
+	const cuadradoNewSegmentado = {
+		x_ini: 0,
+		y_ini: 0,
+		x_fin: 0,
+		y_fin: 0,
+		x_fin_prev: 0,
+		y_fin_prev: 0,
+		posIni: true,
+	};
 	const mouse = {
 		click: false,
 		move: false,
@@ -34,25 +43,55 @@ const PaintCuadrado = (id_canvas) => {
 		width: 0,
 		height: 0,
 	};
-	const click = {
-		x: 0,
-		y: 0,
-	};
-	const clickReal = {
-		x: 0,
-		y: 0,
-	};
-	const capturaPosprev = (e) => {
-		click.x = e.clientX;
-		click.y = e.clientY;
-
-		clickReal.x = click.x - canvasCuadradoDatos.left;
-		clickReal.y = click.y - canvasCuadradoDatos.top;
-
+	const captura_Pos_Posprev = (e) => {
+		let x = e.clientX;
+		let y = e.clientY;
+		let x_real = x - canvasCuadradoDatos.left;
+		let y_real = y - canvasCuadradoDatos.top;
 		mouse.pos_prev.x = mouse.pos.x;
 		mouse.pos_prev.y = mouse.pos.y;
-		mouse.pos.x = clickReal.x;
-		mouse.pos.y = clickReal.y;
+		mouse.pos.x = x_real;
+		mouse.pos.y = y_real;
+	};
+	const graficaCuadradoSegmentado = (cuadrado_new_segmentado) => {
+		const context = document.getElementById(id_canvas).getContext('2d');
+
+		// limpia el canvas:
+		context.clearRect(
+			cuadrado_new_segmentado.x_ini,
+			cuadrado_new_segmentado.y_ini,
+			cuadrado_new_segmentado.x_fin - cuadrado_new_segmentado.x_ini,
+			cuadrado_new_segmentado.y_fin - cuadrado_new_segmentado.y_ini
+		);
+
+		// grafica tablero:
+		context.beginPath();
+		context.fillStyle = 'white'; // fondoColor
+		context.moveTo(0, 0); // (x_ini, y_ini)
+		context.lineTo(1000, 0); // (x_fin, y_ini)
+		context.lineTo(1000, 1000); // (x_fin, y_fin)
+		context.lineTo(0, 1000); // (x_ini, y_fin)
+		context.lineTo(0, 0); // (x_ini, y_ini)
+		context.fill(); // fondoColor = true
+		context.closePath();
+
+		// linea segmentada:
+		context.beginPath();
+		context.strokeStyle = 'red'; // bordeColor
+		context.lineWidth = 1;
+		context.setLineDash([14, 4]); // lineas segmentadas
+
+		context.strokeRect(
+			cuadrado_new_segmentado.x_ini,
+			cuadrado_new_segmentado.y_ini,
+			cuadrado_new_segmentado.x_fin - cuadrado_new_segmentado.x_ini,
+			cuadrado_new_segmentado.y_fin - cuadrado_new_segmentado.y_ini
+		); // grafica el cuadrado
+
+		context.fillStyle = 'blue'; // fondoColor
+		context.fill(); // fondoColor = true
+		context.stroke();
+		context.closePath();
 	};
 	const graficaCuadrado = (newCuadrado) => {
 		const context = document.getElementById(id_canvas).getContext('2d');
@@ -74,12 +113,28 @@ const PaintCuadrado = (id_canvas) => {
 	};
 	const mouseDownCuadrado = (e) => {
 		mouse.click = true;
-		capturaPosprev(e);
+		captura_Pos_Posprev(e);
+	};
+	const mouseMoveCuadrado = (e) => {
+		if (mouse.click) {
+			// el mous esta en movimiento con el click presionado.
+			captura_Pos_Posprev(e);
+			if (cuadradoNewSegmentado.posIni) {
+				cuadradoNewSegmentado.x_ini = mouse.pos_prev.x;
+				cuadradoNewSegmentado.y_ini = mouse.pos_prev.y;
+				cuadradoNewSegmentado.posIni = false;
+			}
+			cuadradoNewSegmentado.x_fin_prev = mouse.pos_prev.x;
+			cuadradoNewSegmentado.y_fin_prev = mouse.pos_prev.y;
+			cuadradoNewSegmentado.x_fin = mouse.pos.x;
+			cuadradoNewSegmentado.y_fin = mouse.pos.y;
+			graficaCuadradoSegmentado(cuadradoNewSegmentado);
+		}
 	};
 	const mouseUpCuadrado = (e) => {
-		capturaPosprev(e);
-
+		//captura_Pos_Posprev(e);
 		if (mouse.pos_prev.x != mouse.pos.x && mouse.pos_prev.y != mouse.pos.y) {
+			graficaCuadradoSegmentado(cuadradoNewSegmentado);
 			// new object:
 			cuadradoNew.id = stateCuadrado.historialCuadrado.length;
 			cuadradoNew.bordeEstado = stateCuadrado.bordeEstado;
@@ -87,14 +142,18 @@ const PaintCuadrado = (id_canvas) => {
 			cuadradoNew.bordeColor = stateCuadrado.bordeColor;
 			cuadradoNew.fondoEstado = stateCuadrado.fondoEstado;
 			cuadradoNew.fondoColor = stateCuadrado.fondoColor;
-			cuadradoNew.x_ini = mouse.pos_prev.x;
-			cuadradoNew.y_ini = mouse.pos_prev.y;
+			cuadradoNew.x_ini = cuadradoNewSegmentado.x_ini;
+			cuadradoNew.y_ini = cuadradoNewSegmentado.y_ini;
+			// cuadradoNew.x_ini = mouse.pos_prev.x;
+			// cuadradoNew.y_ini = mouse.pos_prev.y;
 			cuadradoNew.x_fin = mouse.pos.x;
 			cuadradoNew.y_fin = mouse.pos.y;
 			graficaCuadrado(cuadradoNew);
+			console.log(cuadradoNew);
 			add_cuadrado_en_historia(cuadradoNew);
 		}
 		mouse.click = false;
+		cuadradoNewSegmentado.posIni = true;
 	};
 	// LOGICA END.
 
@@ -110,7 +169,7 @@ const PaintCuadrado = (id_canvas) => {
 				canvasCuadrado.getBoundingClientRect().height;
 
 			canvasCuadrado.addEventListener('mousedown', mouseDownCuadrado);
-			//canvasCuadrado.addEventListener('mousemove', mouseMoveCuadrado);
+			canvasCuadrado.addEventListener('mousemove', mouseMoveCuadrado);
 			canvasCuadrado.addEventListener('mouseup', mouseUpCuadrado);
 		}
 		return () => {
@@ -118,7 +177,7 @@ const PaintCuadrado = (id_canvas) => {
 			//canvasCuadrado.removeEventListener('click', saludar);
 
 			canvasCuadrado.removeEventListener('mousedown', mouseDownCuadrado);
-			//canvasCuadrado.removeEventListener('mousemove', mouseMoveCuadrado);
+			canvasCuadrado.removeEventListener('mousemove', mouseMoveCuadrado);
 			canvasCuadrado.removeEventListener('mouseup', mouseUpCuadrado);
 		};
 	}, [stateCuadrado]);

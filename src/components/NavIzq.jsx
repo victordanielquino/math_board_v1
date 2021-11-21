@@ -5,6 +5,7 @@ import AppContextMover from '../context/AppContextMover';
 import AppContextLapiz from '../context/AppContextLapiz';
 import AppContextBorrador from '../context/AppContextBorrador';
 import AppContextCuadrado from '../context/AppContextCuadrado';
+import AppContextCuadricula from '../context/AppContextCanvas';
 
 import Keyboard from '../containers/Keyboard';
 
@@ -22,6 +23,8 @@ import cuadradoIcon from '../assets/icons/boxes1.svg';
 import funcionIcon from '../assets/icons/function1.svg';
 import sumatoriaIcon from '../assets/icons/sumatoria1.svg';
 import imageIcon from '../assets/icons/image1.svg';
+
+import cuadriculaIcon from '../assets/icons/cuadricula.svg';
 import keyboardIcon from '../assets/icons/keyboard1.svg';
 
 const NavIzq = () => {
@@ -31,6 +34,7 @@ const NavIzq = () => {
 	const { updateLapizActive } = useContext(AppContextLapiz);
 	const { updateBorradorActive } = useContext(AppContextBorrador);
 	const { updateCuadradoActive } = useContext(AppContextCuadrado);
+	const { updateCuadriculaActive } = useContext(AppContextCuadricula);
 
 	// useState:
 	const [toggleKeyboard, setToggleKeyboard] = useState(false);
@@ -48,6 +52,7 @@ const NavIzq = () => {
 		// [imageIcon, 'imageIcon'],
 		// [zoomInIcon, 'zoomInIcon'],
 		// [zoomOutIcon, 'zoomOutIcon'],
+		[cuadriculaIcon, 'cuadriculaIcon'],
 	];
 
 	const handleIcon = (icon) => {
@@ -61,38 +66,43 @@ const NavIzq = () => {
 				updateLapizActive(false);
 				updateBorradorActive(false);
 				updateCuadradoActive(false);
+				updateCuadriculaActive(false);
 				break;
 			case 'lapizIcon':
 				updateMoverActive(false);
 				updateLapizActive(true);
 				updateBorradorActive(false);
 				updateCuadradoActive(false);
+				updateCuadriculaActive(false);
 				break;
 			case 'borradorIcon':
 				updateMoverActive(false);
 				updateLapizActive(false);
 				updateBorradorActive(true);
 				updateCuadradoActive(false);
+				updateCuadriculaActive(false);
 				break;
 			case 'cuadradoIcon':
 				updateMoverActive(false);
 				updateLapizActive(false);
 				updateBorradorActive(false);
 				updateCuadradoActive(true);
+				updateCuadriculaActive(false);
+				break;
+			case 'cuadriculaIcon':
+				updateMoverActive(false);
+				updateLapizActive(false);
+				updateBorradorActive(false);
+				updateCuadradoActive(false);
+				updateCuadriculaActive(true);
 				break;
 			default:
 				console.log('Opcion no registrada!!!');
 				break;
 		}
 	};
-	useEffect(() => {
-		// se ejucuta cada que se hace un render
-		//console.log('useEffect:');
-	});
-	useEffect(() => {
-		// se ejucuta 1 vez antes del 1er render
-		//console.log('useEffect: []');
-	}, []);
+
+	// useEffect:
 	useEffect(() => {
 		//console.log('useEffect: [state]');
 		iconosPaleta.map((elem) => {

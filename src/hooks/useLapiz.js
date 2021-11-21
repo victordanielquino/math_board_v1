@@ -1,7 +1,7 @@
 import { useState } from 'react';
 const initialStateLapiz = {
 	active: false,
-	color: 'green',
+	color: 'black',
 	grosor: 4,
 	historiaLapiz: [],
 };

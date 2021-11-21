@@ -17,7 +17,7 @@ const initialState = {
 		'ZXCVBNM,'.split(''),
 	],
 	active: '',
-	color: 'red',
+	color: 'green',
 	colorFondo: 'blue',
 	grosor: 4,
 };
@@ -64,6 +64,12 @@ const useInitialState = () => {
 				setState({
 					...state,
 					active: 'cuadradoIcon',
+				});
+				break;
+			case 'cuadriculaIcon':
+				setState({
+					...state,
+					active: 'cuadriculaIcon',
 				});
 				break;
 			default:

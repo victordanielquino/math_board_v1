@@ -5,7 +5,7 @@ import AppContext from '../context/AppContext';
 
 // styles:
 import '../styles/PaletaGrosor.scss';
-import iconLineaNone from '../assets/icons/lineaNone.svg';
+//import iconLineaNone from '../assets/icons/lineaNone.svg';
 import iconLineaS from '../assets/icons/lineaS.svg';
 import iconLineaM from '../assets/icons/lineaM.svg';
 import iconLineaL from '../assets/icons/lineaL.svg';
