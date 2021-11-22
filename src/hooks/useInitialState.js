@@ -18,7 +18,7 @@ const initialState = {
 	],
 	active: '',
 	color: 'black',
-	colorFondo: 'blue',
+	colorFondo: 'red',
 	grosor: 1,
 };
 const useInitialState = () => {

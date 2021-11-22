@@ -103,9 +103,9 @@ const PaintCuadrado = (id_canvas) => {
 		//captura_Pos_Posprev(e);
 		if (mouse.click && mouse.pos_prev.x != 0 && mouse.pos_prev.y != 0) {
 			cuadrado.id = stateCuadrado.historiaCuadrado.length;
+			add_cuadrado_en_historia(cuadrado);
 			paint();
 			utilsCuadrado_graficaCuadrado(context, cuadrado);
-			add_cuadrado_en_historia(cuadrado);
 		}
 		mouseReinicia();
 	};
