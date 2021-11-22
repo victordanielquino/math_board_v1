@@ -19,7 +19,7 @@ import plusIcon from '../assets/icons/plus-square.svg';
 import textIcon from '../assets/icons/textarea.svg';
 import zoomInIcon from '../assets/icons/zoom-in.svg';
 import zoomOutIcon from '../assets/icons/zoom-out.svg';
-import cuadradoIcon from '../assets/icons/boxes1.svg';
+import cuadradoIcon from '../assets/icons/square.svg';
 import funcionIcon from '../assets/icons/function1.svg';
 import sumatoriaIcon from '../assets/icons/sumatoria1.svg';
 import imageIcon from '../assets/icons/image1.svg';

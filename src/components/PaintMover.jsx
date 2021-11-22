@@ -4,6 +4,16 @@ import React, { useContext, useEffect } from 'react';
 import AppContextMover from '../context/AppContextMover';
 import AppContextLapiz from '../context/AppContextLapiz';
 import AppContextCuadrado from '../context/AppContextCuadrado';
+import AppContextCanvas from '../context/AppContextCanvas';
+
+// utils:
+import { utilsCuadricula_graficaCuadricula } from '../utils/UtilsCuadricula';
+import { utilsLapiz_graficaLapizHistoria } from '../utils/UtilsLapiz';
+import {
+	utilsCuadrado_graficaCuadrado,
+	utilsCuadrado_graficaCuadradoHistoria,
+	UC_graficaCuadradoHistoria_menosI,
+} from '../utils/UtilsCuadrado';
 
 const PaintMover = (id_canvas, canvasWidth, canvasHeight) => {
 	// useContext: mover
@@ -11,11 +21,16 @@ const PaintMover = (id_canvas, canvasWidth, canvasHeight) => {
 	// useContext: cuadrado
 	const { stateCuadrado } = useContext(AppContextCuadrado);
 	// useContext: lapiz
-	const { stateLapipz } = useContext(AppContextLapiz);
+	const { stateLapiz } = useContext(AppContextLapiz);
+	// useContext: cuadricula
+	const { stateCanvas } = useContext(AppContextCanvas);
 
 	// LOGICA:
-	const arrayCuadrados = stateCuadrado.historialCuadrado;
+	let canvas = '';
+	let context = '';
+	let arrayCuadrados = stateCuadrado.historiaCuadrado;
 	var cuadradoSelect = {};
+
 	const mouse = {
 		click: false,
 		move: false,
@@ -40,73 +55,9 @@ const PaintMover = (id_canvas, canvasWidth, canvasHeight) => {
 		mouse.pos.x = x_real;
 		mouse.pos.y = y_real;
 	};
-	const graficaCuadricula = () => {
-		const context = document.getElementById('canvas-1').getContext('2d');
-		context.beginPath();
-
-		context.strokeStyle = 'black'; // bordeColor
-		context.fillStyle = 'white'; // fondoColor
-		context.lineWidth = 1; // bordeGrosor
-
-		context.moveTo(0, 0); // (x_ini, y_ini)
-		context.lineTo(canvasWidth, 0); // (x_fin, y_ini)
-		context.lineTo(canvasWidth, canvasHeight); // (x_fin, y_fin)
-		context.lineTo(0, canvasHeight); // (x_ini, y_fin)
-		context.lineTo(0, 0); // (x_ini, y_ini)
-
-		context.fill(); // fondoColor = true
-		context.stroke(); // bordeColor = true
-		context.closePath();
-	};
-	const graficaCuadrado = (newCuadrado) => {
-		const context = document.getElementById(id_canvas).getContext('2d');
-		context.beginPath();
-
-		context.strokeStyle = newCuadrado.bordeColor; // bordeColor
-		context.fillStyle = newCuadrado.fondoColor; // fondoColor
-		context.lineWidth = newCuadrado.bordeGrosor; // bordeGrosor
-
-		context.moveTo(newCuadrado.x_ini, newCuadrado.y_ini); // (x_ini, y_ini)
-		context.lineTo(newCuadrado.x_fin, newCuadrado.y_ini); // (x_fin, y_ini)
-		context.lineTo(newCuadrado.x_fin, newCuadrado.y_fin); // (x_fin, y_fin)
-		context.lineTo(newCuadrado.x_ini, newCuadrado.y_fin); // (x_ini, y_fin)
-		context.lineTo(newCuadrado.x_ini, newCuadrado.y_ini); // (x_ini, y_ini)
-
-		newCuadrado.fondoEstado ? context.fill() : ''; // fondoColor = true
-		newCuadrado.bordeEstado ? context.stroke() : ''; // bordeColor = true
-		context.closePath();
-	};
-	const graficaCuadradoArray = (array, id) => {
-		array.map((newCuadrado) => {
-			if (newCuadrado.id != id) {
-				const context = document.getElementById(id_canvas).getContext('2d');
-				context.beginPath();
-
-				context.strokeStyle = newCuadrado.bordeColor; // bordeColor
-				context.fillStyle = newCuadrado.fondoColor; // fondoColor
-				context.lineWidth = newCuadrado.bordeGrosor; // bordeGrosor
-
-				context.moveTo(newCuadrado.x_ini, newCuadrado.y_ini); // (x_ini, y_ini)
-				context.lineTo(newCuadrado.x_fin, newCuadrado.y_ini); // (x_fin, y_ini)
-				context.lineTo(newCuadrado.x_fin, newCuadrado.y_fin); // (x_fin, y_fin)
-				context.lineTo(newCuadrado.x_ini, newCuadrado.y_fin); // (x_ini, y_fin)
-				context.lineTo(newCuadrado.x_ini, newCuadrado.y_ini); // (x_ini, y_ini)
-
-				newCuadrado.fondoEstado ? context.fill() : ''; // fondoColor = true
-				newCuadrado.bordeEstado ? context.stroke() : ''; // bordeColor = true
-				context.closePath();
-			}
-		});
-	};
-
-	const saludar = () => {
-		alert('hola');
-		console.log('alert');
-	};
 	const cuadradoBusca = (e) => {
 		captura_Pos_Posprev(e);
-		//stateCuadrado.historialCuadrado.map((elem) => {
-		arrayCuadrados.map((elem) => {
+		arrayCuadrados.forEach((elem) => {
 			if (
 				elem.x_ini < mouse.pos.x &&
 				mouse.pos.x < elem.x_fin &&
@@ -133,45 +84,43 @@ const PaintMover = (id_canvas, canvasWidth, canvasHeight) => {
 	};
 	const mouseMoveMover = (e) => {
 		if (mouse.move) {
-			graficaCuadricula();
-			graficaCuadradoArray(arrayCuadrados, cuadradoSelect.id);
+			utilsCuadricula_graficaCuadricula(context, stateCanvas);
 			cuadradoMueve(e);
-			graficaCuadrado(cuadradoSelect);
+			utilsCuadrado_graficaCuadradoHistoria(context, arrayCuadrados);
+			utilsLapiz_graficaLapizHistoria(context, stateLapiz.historiaLapiz); // grafica historia de lapiz
 		}
 	};
 	const mouseUpMover = (e) => {
 		if (mouse.move) {
 			cuadradoMueve(e);
-			graficaCuadrado(cuadradoSelect);
-			mouse.move = false;
+			utilsCuadrado_graficaCuadrado(context, cuadradoSelect);
+			utilsLapiz_graficaLapizHistoria(context, stateLapiz.historiaLapiz); // grafica historia de lapiz
 		}
+		mouse.move = false;
 		mouse.click = false;
+	};
+	const update_canvasMoverDatos = () => {
+		canvasMoverDatos.top = canvas.getBoundingClientRect().top;
+		canvasMoverDatos.left = canvas.getBoundingClientRect().left;
+		canvasMoverDatos.width = canvas.getBoundingClientRect().width;
+		canvasMoverDatos.height = canvas.getBoundingClientRect().height;
 	};
 	// LOGICA END.
 
 	// useEffect:
 	useEffect(() => {
+		canvas = document.getElementById(id_canvas);
+		context = canvas.getContext('2d');
 		if (stateMover.active) {
-			let canvasMover = document.getElementById(id_canvas);
-			canvasMoverDatos.top = canvasMover.getBoundingClientRect().top;
-			canvasMoverDatos.left = canvasMover.getBoundingClientRect().left;
-			canvasMoverDatos.width = canvasMover.getBoundingClientRect().width;
-			canvasMoverDatos.height = canvasMover.getBoundingClientRect().height;
-
-			//canvasMover.addEventListener('click', saludar);
-			//canvasMover.addEventListener('click', mouseClickMover);
-			canvasMover.addEventListener('mousedown', mouseDownMover);
-			canvasMover.addEventListener('mousemove', mouseMoveMover);
-			canvasMover.addEventListener('mouseup', mouseUpMover);
+			update_canvasMoverDatos();
+			canvas.addEventListener('mousedown', mouseDownMover);
+			canvas.addEventListener('mousemove', mouseMoveMover);
+			canvas.addEventListener('mouseup', mouseUpMover);
 		}
 		return () => {
-			let canvasMover = document.getElementById(id_canvas);
-
-			//canvasMover.removeEventListener('click', saludar);
-			//canvasMover.removeEventListener('click', mouseClickMover);
-			canvasMover.removeEventListener('mousedown', mouseDownMover);
-			canvasMover.removeEventListener('mousemove', mouseMoveMover);
-			canvasMover.removeEventListener('mouseup', mouseUpMover);
+			canvas.removeEventListener('mousedown', mouseDownMover);
+			canvas.removeEventListener('mousemove', mouseMoveMover);
+			canvas.removeEventListener('mouseup', mouseUpMover);
 		};
 	}, [stateCuadrado]);
 

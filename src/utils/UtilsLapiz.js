@@ -1,7 +1,8 @@
 // LAPIZ:
-const utilsLapiz_graficaLapiz = (lapiz, context) => {
+const utilsLapiz_graficaLapiz = (context, lapiz) => {
 	context.lineWidth = lapiz.grosor;
 	context.strokeStyle = lapiz.color;
+	context.setLineDash([0, 0]);
 	context.beginPath();
 	let sw = true;
 	lapiz.historiaLinea.forEach((element) => {
@@ -14,8 +15,8 @@ const utilsLapiz_graficaLapiz = (lapiz, context) => {
 };
 
 // LAPIZ - HISORIA:
-const utilsLapiz_graficaLapizHistoria = (array, context) => {
-	array.forEach((element) => utilsLapiz_graficaLapiz(element, context));
+const utilsLapiz_graficaLapizHistoria = (context, array) => {
+	array.forEach((element) => utilsLapiz_graficaLapiz(context, element));
 };
 
 export { utilsLapiz_graficaLapiz, utilsLapiz_graficaLapizHistoria };

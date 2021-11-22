@@ -10,7 +10,7 @@ const initialStateCuadrado = {
 	y_ini: 0,
 	width: 10,
 	height: 10,
-	historialCuadrado: [],
+	historiaCuadrado: [],
 };
 
 const useCuadrado = () => {
@@ -59,7 +59,7 @@ const useCuadrado = () => {
 	const add_cuadrado_en_historia = (cuadrado) => {
 		setStateCuadrado({
 			...stateCuadrado,
-			historialCuadrado: [...stateCuadrado.historialCuadrado, cuadrado],
+			historiaCuadrado: [...stateCuadrado.historiaCuadrado, cuadrado],
 		});
 	};
 	// DELETE: DELETE_IN:	historiaCuadrado[]
@@ -67,7 +67,7 @@ const useCuadrado = () => {
 	const update_cuadrado_en_historia = (array) => {
 		setStateCuadrado({
 			...stateCuadrado,
-			historialCuadrado: array,
+			historiaCuadrado: array,
 		});
 	};
 	const update_all = (

@@ -2,6 +2,7 @@ const utilsCuadricula_graficaCuadricula = (context, canvas) => {
 	context.lineWidth = canvas.lineaGrosor; // lineaGrosor
 	context.strokeStyle = canvas.lineaColor; // lineaColor
 	context.fillStyle = 'white';
+	context.setLineDash([0, 0]);
 
 	context.beginPath();
 	context.moveTo(0, 0); // (x_ini, y_ini)

@@ -7,7 +7,7 @@ import AppContextCanvas from '../context/AppContextCanvas';
 import '../styles/MenuCuadricula.scss';
 import iconCuadricula from '../assets/icons/cuadricula.svg';
 import iconCuadriculaSin from '../assets/icons/cuadriculaSin.svg';
-import iconLineaNone from '../assets/icons/lineaNone.svg';
+import iconCuadriculaNone from '../assets/icons/lineaNone.svg';
 
 const MenuCuadricula = () => {
 	// useContext:
@@ -15,20 +15,34 @@ const MenuCuadricula = () => {
 		useContext(AppContextCanvas);
 
 	// LOGICA:
-	const handleRadioCuadricula = (e) => {
-		switch (e.target.value) {
-			case 'cuadricula':
-				updateTipoCuadricula(e.target.value);
-				break;
-			case 'linea':
-				updateTipoCuadricula(e.target.value);
-				break;
-			case 'sinCuadricula':
-				updateTipoCuadricula(e.target.value);
-				break;
-			default:
-				break;
+	const arrayIconCuadricula = [
+		{
+			iconCuadricula: iconCuadricula,
+			tipo: 'cuadricula',
+			id: 'iconCuadricula',
+		},
+		{
+			iconCuadricula: iconCuadriculaSin,
+			tipo: 'linea',
+			id: 'iconCuadriculaSin',
+		},
+		{
+			iconCuadricula: iconCuadriculaNone,
+			tipo: 'ninguno',
+			id: 'iconCuadriculaNone',
+		},
+	];
+	const updatePaleta_tipoCuadricula = (tipo) => {
+		const array = document.querySelectorAll('.activeIconCuadricula');
+		for (let i = 0; i < array.length; i++) {
+			array[i].classList.remove('activeIconCuadricula');
 		}
+		let elem = arrayIconCuadricula.find((elem) => elem.tipo == tipo);
+		document.getElementById(elem.id).classList.add('activeIconCuadricula');
+	};
+	const handleCuadriculaTipo = (tipo) => {
+		updatePaleta_tipoCuadricula(tipo);
+		updateTipoCuadricula(tipo);
 	};
 	const handleBtnAncho = (op) => {
 		op == '-' && stateCanvas.cuadriculaWidth > 10
@@ -39,64 +53,37 @@ const MenuCuadricula = () => {
 	// LOGICA END.
 
 	// useEffect
-	useEffect(() => {}, []);
+	useEffect(() => {
+		updatePaleta_tipoCuadricula(stateCanvas.tipoCuadricula);
+	}, []);
 
 	return (
 		<article className="article__menuCuadricula">
 			<div className="article__menuCuadricula__paletaTipo">
 				<div>
-					<span>Tipo: </span>
+					<span>Cuadricula: </span>
 				</div>
-				<div className="inputRadio">
-					<input
-						type="radio"
-						value="cuadricula"
-						name="radioCuadricula"
-						defaultChecked={stateCanvas.tipoCuadricula == 'cuadricula'}
-						onChange={handleRadioCuadricula}
-					/>
+				<div className="article__menuCuadricula__paletaTipo__icons">
+					{arrayIconCuadricula.map((elem) => (
+						<img
+							className="article__menuCuadricula__paletaTipo__icons__icon "
+							src={elem.iconCuadricula}
+							id={elem.id}
+							key={`key-${elem.id}`}
+							onClick={() => handleCuadriculaTipo(elem.tipo)}
+						/>
+					))}
 				</div>
-				<img className="svgIcon" src={iconCuadricula}></img>
-				<div className="inputRadio">
-					<input
-						type="radio"
-						value="linea"
-						name="radioCuadricula"
-						defaultChecked={stateCanvas.tipoCuadricula == 'linea'}
-						onChange={handleRadioCuadricula}
-					/>
-				</div>
-				<img className="svgIcon" src={iconCuadriculaSin}></img>
-				<div className="inputRadio">
-					<input
-						type="radio"
-						value="sinCuadricula"
-						name="radioCuadricula"
-						defaultChecked={stateCanvas.tipoCuadricula == 'ninguno'}
-						onChange={handleRadioCuadricula}
-					/>
-				</div>
-				<img className="svgIcon" src={iconLineaNone}></img>
 			</div>
 			<div className="article__menuCuadricula__paletaAncho">
 				<div>
-					<span>Ancho: </span>
+					<span>Tamaño: </span>
 				</div>
 				<div className="inputButton">
-					<input
-						type="button"
-						value="+"
-						// defaultChecked={stateCuadrado.fondoEstado}
-						onClick={() => handleBtnAncho('+')}
-					/>
+					<input type="button" value="-" onClick={() => handleBtnAncho('-')} />
 				</div>
 				<div className="inputButton">
-					<input
-						type="button"
-						value="-"
-						// defaultChecked={stateCuadrado.fondoEstado}
-						onClick={() => handleBtnAncho('-')}
-					/>
+					<input type="button" value="+" onClick={() => handleBtnAncho('+')} />
 				</div>
 			</div>
 		</article>

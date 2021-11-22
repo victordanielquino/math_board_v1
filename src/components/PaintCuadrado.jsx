@@ -2,38 +2,43 @@ import React, { useContext, useEffect } from 'react';
 
 // CONTEXT:
 import AppContextCuadrado from '../context/AppContextCuadrado';
+import AppContextCanvas from '../context/AppContextCanvas';
+import AppContextLapiz from '../context/AppContextLapiz';
+
+// utils:
+import { utilsCuadricula_graficaCuadricula } from '../utils/UtilsCuadricula';
+import { utilsLapiz_graficaLapizHistoria } from '../utils/UtilsLapiz';
+import {
+	utilsCuadrado_graficaCuadrado,
+	utilsCuadrado_graficaCuadradoHistoria,
+} from '../utils/UtilsCuadrado';
 
 const PaintCuadrado = (id_canvas) => {
 	// useContext:
 	const { stateCuadrado, add_cuadrado_en_historia } =
 		useContext(AppContextCuadrado);
+	const { stateCanvas } = useContext(AppContextCanvas);
+	const { stateLapiz } = useContext(AppContextLapiz);
 
 	// LOGICA:
-	const cuadradoNew = {
+	let canvas = '';
+	let context = '';
+	const cuadrado = {
 		id: 0,
-		bordeEstado: true,
-		bordeGrosor: 2,
-		bordeColor: 'black',
-
-		fondoEstado: true,
-		fondoColor: 'black',
+		bordeEstado: stateCuadrado.bordeEstado,
+		bordeGrosor: stateCuadrado.bordeGrosor,
+		bordeColor: stateCuadrado.bordeColor,
+		fondoEstado: stateCuadrado.fondoEstado,
+		fondoColor: stateCuadrado.fondoColor,
 		x_ini: 0,
 		y_ini: 0,
 		x_fin: 0,
 		y_fin: 0,
-	};
-	const cuadradoNewSegmentado = {
-		x_ini: 0,
-		y_ini: 0,
-		x_fin: 0,
-		y_fin: 0,
-		x_fin_prev: 0,
-		y_fin_prev: 0,
-		posIni: true,
 	};
 	const mouse = {
 		click: false,
 		move: false,
+		primerClick: false,
 		pos: { x: 0, y: 0 },
 		pos_prev: { x: 0, y: 0 },
 	};
@@ -52,64 +57,22 @@ const PaintCuadrado = (id_canvas) => {
 		mouse.pos_prev.y = mouse.pos.y;
 		mouse.pos.x = x_real;
 		mouse.pos.y = y_real;
-	};
-	const graficaCuadradoSegmentado = (cuadrado_new_segmentado) => {
-		const context = document.getElementById(id_canvas).getContext('2d');
 
-		// limpia el canvas:
-		context.clearRect(
-			cuadrado_new_segmentado.x_ini,
-			cuadrado_new_segmentado.y_ini,
-			cuadrado_new_segmentado.x_fin - cuadrado_new_segmentado.x_ini,
-			cuadrado_new_segmentado.y_fin - cuadrado_new_segmentado.y_ini
+		if (mouse.primerClick) {
+			cuadrado.x_ini = mouse.pos_prev.x;
+			cuadrado.y_ini = mouse.pos_prev.y;
+			mouse.primerClick = false;
+		}
+		cuadrado.x_fin = mouse.pos.x;
+		cuadrado.y_fin = mouse.pos.y;
+	};
+	const paint = () => {
+		utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
+		utilsLapiz_graficaLapizHistoria(context, stateLapiz.historiaLapiz); // grafica historia de lapiz
+		utilsCuadrado_graficaCuadradoHistoria(
+			context,
+			stateCuadrado.historiaCuadrado
 		);
-
-		// grafica tablero:
-		context.beginPath();
-		context.fillStyle = 'white'; // fondoColor
-		context.moveTo(0, 0); // (x_ini, y_ini)
-		context.lineTo(1000, 0); // (x_fin, y_ini)
-		context.lineTo(1000, 1000); // (x_fin, y_fin)
-		context.lineTo(0, 1000); // (x_ini, y_fin)
-		context.lineTo(0, 0); // (x_ini, y_ini)
-		context.fill(); // fondoColor = true
-		context.closePath();
-
-		// linea segmentada:
-		context.beginPath();
-		context.strokeStyle = 'red'; // bordeColor
-		context.lineWidth = 1;
-		context.setLineDash([14, 4]); // lineas segmentadas
-
-		context.strokeRect(
-			cuadrado_new_segmentado.x_ini,
-			cuadrado_new_segmentado.y_ini,
-			cuadrado_new_segmentado.x_fin - cuadrado_new_segmentado.x_ini,
-			cuadrado_new_segmentado.y_fin - cuadrado_new_segmentado.y_ini
-		); // grafica el cuadrado
-
-		context.fillStyle = 'blue'; // fondoColor
-		context.fill(); // fondoColor = true
-		context.stroke();
-		context.closePath();
-	};
-	const graficaCuadrado = (newCuadrado) => {
-		const context = document.getElementById(id_canvas).getContext('2d');
-		context.beginPath();
-
-		context.strokeStyle = newCuadrado.bordeColor; // bordeColor
-		context.fillStyle = newCuadrado.fondoColor; // fondoColor
-		context.lineWidth = newCuadrado.bordeGrosor; // bordeGrosor
-
-		context.moveTo(newCuadrado.x_ini, newCuadrado.y_ini); // (x_ini, y_ini)
-		context.lineTo(newCuadrado.x_fin, newCuadrado.y_ini); // (x_fin, y_ini)
-		context.lineTo(newCuadrado.x_fin, newCuadrado.y_fin); // (x_fin, y_fin)
-		context.lineTo(newCuadrado.x_ini, newCuadrado.y_fin); // (x_ini, y_fin)
-		context.lineTo(newCuadrado.x_ini, newCuadrado.y_ini); // (x_ini, y_ini)
-
-		newCuadrado.fondoEstado ? context.fill() : ''; // fondoColor = true
-		newCuadrado.bordeEstado ? context.stroke() : ''; // bordeColor = true
-		context.closePath();
 	};
 	const mouseDownCuadrado = (e) => {
 		mouse.click = true;
@@ -117,68 +80,51 @@ const PaintCuadrado = (id_canvas) => {
 	};
 	const mouseMoveCuadrado = (e) => {
 		if (mouse.click) {
-			// el mous esta en movimiento con el click presionado.
-			captura_Pos_Posprev(e);
-			if (cuadradoNewSegmentado.posIni) {
-				cuadradoNewSegmentado.x_ini = mouse.pos_prev.x;
-				cuadradoNewSegmentado.y_ini = mouse.pos_prev.y;
-				cuadradoNewSegmentado.posIni = false;
+			if (!mouse.move) {
+				mouse.primerClick = true;
+				mouse.move = true;
 			}
-			cuadradoNewSegmentado.x_fin_prev = mouse.pos_prev.x;
-			cuadradoNewSegmentado.y_fin_prev = mouse.pos_prev.y;
-			cuadradoNewSegmentado.x_fin = mouse.pos.x;
-			cuadradoNewSegmentado.y_fin = mouse.pos.y;
-			graficaCuadradoSegmentado(cuadradoNewSegmentado);
+			captura_Pos_Posprev(e);
+			paint();
+			utilsCuadrado_graficaCuadrado(context, cuadrado);
 		}
 	};
 	const mouseUpCuadrado = (e) => {
-		//captura_Pos_Posprev(e);
-		if (mouse.pos_prev.x != mouse.pos.x && mouse.pos_prev.y != mouse.pos.y) {
-			graficaCuadradoSegmentado(cuadradoNewSegmentado);
-			// new object:
-			cuadradoNew.id = stateCuadrado.historialCuadrado.length;
-			cuadradoNew.bordeEstado = stateCuadrado.bordeEstado;
-			cuadradoNew.bordeGrosor = stateCuadrado.bordeGrosor;
-			cuadradoNew.bordeColor = stateCuadrado.bordeColor;
-			cuadradoNew.fondoEstado = stateCuadrado.fondoEstado;
-			cuadradoNew.fondoColor = stateCuadrado.fondoColor;
-			cuadradoNew.x_ini = cuadradoNewSegmentado.x_ini;
-			cuadradoNew.y_ini = cuadradoNewSegmentado.y_ini;
-			// cuadradoNew.x_ini = mouse.pos_prev.x;
-			// cuadradoNew.y_ini = mouse.pos_prev.y;
-			cuadradoNew.x_fin = mouse.pos.x;
-			cuadradoNew.y_fin = mouse.pos.y;
-			graficaCuadrado(cuadradoNew);
-			console.log(cuadradoNew);
-			add_cuadrado_en_historia(cuadradoNew);
+		captura_Pos_Posprev(e);
+		if (mouse.click) {
+			cuadrado.id = stateCuadrado.historiaCuadrado.length;
+			paint();
+			utilsCuadrado_graficaCuadrado(context, cuadrado);
+			add_cuadrado_en_historia(cuadrado);
 		}
 		mouse.click = false;
-		cuadradoNewSegmentado.posIni = true;
+		mouse.move = false;
+		mouse.primerClick = false;
+	};
+	const update_canvasCuadradoDatos = () => {
+		canvasCuadradoDatos.top = canvas.getBoundingClientRect().top;
+		canvasCuadradoDatos.left = canvas.getBoundingClientRect().left;
+		canvasCuadradoDatos.width = canvas.getBoundingClientRect().width;
+		canvasCuadradoDatos.height = canvas.getBoundingClientRect().height;
 	};
 	// LOGICA END.
 
 	// useEffect:
 	useEffect(() => {
-		if (stateCuadrado.active) {
-			let canvasCuadrado = document.getElementById(id_canvas);
-			//canvasCuadrado.addEventListener('click', saludar);
-			canvasCuadradoDatos.top = canvasCuadrado.getBoundingClientRect().top;
-			canvasCuadradoDatos.left = canvasCuadrado.getBoundingClientRect().left;
-			canvasCuadradoDatos.width = canvasCuadrado.getBoundingClientRect().width;
-			canvasCuadradoDatos.height =
-				canvasCuadrado.getBoundingClientRect().height;
+		canvas = document.getElementById(id_canvas);
+		context = canvas.getContext('2d');
 
-			canvasCuadrado.addEventListener('mousedown', mouseDownCuadrado);
-			canvasCuadrado.addEventListener('mousemove', mouseMoveCuadrado);
-			canvasCuadrado.addEventListener('mouseup', mouseUpCuadrado);
+		if (stateCuadrado.active) {
+			update_canvasCuadradoDatos();
+
+			canvas.addEventListener('mousedown', mouseDownCuadrado);
+			canvas.addEventListener('mousemove', mouseMoveCuadrado);
+			canvas.addEventListener('mouseup', mouseUpCuadrado);
 		}
 		return () => {
-			let canvasCuadrado = document.getElementById(id_canvas);
-			//canvasCuadrado.removeEventListener('click', saludar);
-
-			canvasCuadrado.removeEventListener('mousedown', mouseDownCuadrado);
-			canvasCuadrado.removeEventListener('mousemove', mouseMoveCuadrado);
-			canvasCuadrado.removeEventListener('mouseup', mouseUpCuadrado);
+			canvas.removeEventListener('mousedown', mouseDownCuadrado);
+			canvas.removeEventListener('mousemove', mouseMoveCuadrado);
+			canvas.removeEventListener('mouseup', mouseUpCuadrado);
 		};
 	}, [stateCuadrado]);
 	useEffect(() => {

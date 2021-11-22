@@ -68,11 +68,12 @@ const PaintLapiz = (id_canvas) => {
 	};
 
 	const graficaLinea = (linea) => {
+		context.strokeStyle = linea.color;
+		context.lineWidth = linea.grosor;
+		context.setLineDash([0, 0]);
 		context.beginPath();
 		context.moveTo(linea.x_ini, linea.y_ini);
 		context.lineTo(linea.x_fin, linea.y_fin);
-		context.strokeStyle = linea.color;
-		context.lineWidth = linea.grosor;
 		context.stroke();
 		context.closePath();
 	};
@@ -109,6 +110,12 @@ const PaintLapiz = (id_canvas) => {
 		}
 		mouse.click = false;
 	};
+	const update_canvasLapizDatos = () => {
+		canvasLapizDatos.top = canvas.getBoundingClientRect().top;
+		canvasLapizDatos.left = canvas.getBoundingClientRect().left;
+		canvasLapizDatos.width = canvas.getBoundingClientRect().width;
+		canvasLapizDatos.height = canvas.getBoundingClientRect().height;
+	};
 	// LOGICA END.
 
 	// useEffect:
@@ -117,12 +124,7 @@ const PaintLapiz = (id_canvas) => {
 		context = canvas.getContext('2d');
 
 		if (stateLapiz.active) {
-			//canvasLapiz.addEventListener('click', saludar);
-			canvasLapizDatos.top = canvas.getBoundingClientRect().top;
-			canvasLapizDatos.left = canvas.getBoundingClientRect().left;
-			canvasLapizDatos.width = canvas.getBoundingClientRect().width;
-			canvasLapizDatos.height = canvas.getBoundingClientRect().height;
-
+			update_canvasLapizDatos();
 			canvas.addEventListener('mousedown', mouseDownLapiz);
 			canvas.addEventListener('mousemove', mouseMoveLapiz);
 			canvas.addEventListener('mouseup', mouseUpLapiz);
