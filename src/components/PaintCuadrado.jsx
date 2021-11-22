@@ -42,6 +42,16 @@ const PaintCuadrado = (id_canvas) => {
 		pos: { x: 0, y: 0 },
 		pos_prev: { x: 0, y: 0 },
 	};
+	const mouseReinicia = () => {
+		mouse.click = false;
+		mouse.move = false;
+		mouse.primerClick = false;
+		mouse.pos.x = 0;
+		mouse.pos_prev.x = 0;
+		mouse.pos.y = 0;
+		mouse.pos_prev.y = 0;
+	};
+
 	const canvasCuadradoDatos = {
 		top: 0,
 		left: 0,
@@ -49,10 +59,10 @@ const PaintCuadrado = (id_canvas) => {
 		height: 0,
 	};
 	const captura_Pos_Posprev = (e) => {
-		let x = e.clientX;
-		let y = e.clientY;
-		let x_real = x - canvasCuadradoDatos.left;
-		let y_real = y - canvasCuadradoDatos.top;
+		const x = e.clientX;
+		const y = e.clientY;
+		const x_real = x - canvasCuadradoDatos.left;
+		const y_real = y - canvasCuadradoDatos.top;
 		mouse.pos_prev.x = mouse.pos.x;
 		mouse.pos_prev.y = mouse.pos.y;
 		mouse.pos.x = x_real;
@@ -68,11 +78,11 @@ const PaintCuadrado = (id_canvas) => {
 	};
 	const paint = () => {
 		utilsCuadricula_graficaCuadricula(context, stateCanvas); // grafica cuadricula
-		utilsLapiz_graficaLapizHistoria(context, stateLapiz.historiaLapiz); // grafica historia de lapiz
 		utilsCuadrado_graficaCuadradoHistoria(
 			context,
 			stateCuadrado.historiaCuadrado
 		);
+		utilsLapiz_graficaLapizHistoria(context, stateLapiz.historiaLapiz); // grafica historia de lapiz
 	};
 	const mouseDownCuadrado = (e) => {
 		mouse.click = true;
@@ -90,16 +100,14 @@ const PaintCuadrado = (id_canvas) => {
 		}
 	};
 	const mouseUpCuadrado = (e) => {
-		captura_Pos_Posprev(e);
-		if (mouse.click) {
+		//captura_Pos_Posprev(e);
+		if (mouse.click && mouse.pos_prev.x != 0 && mouse.pos_prev.y != 0) {
 			cuadrado.id = stateCuadrado.historiaCuadrado.length;
 			paint();
 			utilsCuadrado_graficaCuadrado(context, cuadrado);
 			add_cuadrado_en_historia(cuadrado);
 		}
-		mouse.click = false;
-		mouse.move = false;
-		mouse.primerClick = false;
+		mouseReinicia();
 	};
 	const update_canvasCuadradoDatos = () => {
 		canvasCuadradoDatos.top = canvas.getBoundingClientRect().top;

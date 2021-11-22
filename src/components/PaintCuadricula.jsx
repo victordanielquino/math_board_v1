@@ -18,17 +18,20 @@ const PaintCuadricula = (canvasId) => {
 
 	// LOGICA:
 	let context = '';
+	const paint = () => {
+		utilsCuadricula_graficaCuadricula(context, stateCanvas);
+		utilsCuadrado_graficaCuadradoHistoria(
+			context,
+			stateCuadrado.historiaCuadrado
+		);
+		utilsLapiz_graficaLapizHistoria(context, stateLapiz.historiaLapiz);
+	};
 	// LOGICA END.
 
 	// useEffect:
 	useEffect(() => {
 		context = document.getElementById(canvasId).getContext('2d');
-		utilsCuadricula_graficaCuadricula(context, stateCanvas);
-		utilsLapiz_graficaLapizHistoria(context, stateLapiz.historiaLapiz);
-		utilsCuadrado_graficaCuadradoHistoria(
-			context,
-			stateCuadrado.historiaCuadrado
-		);
+		paint();
 	}, [
 		stateCanvas.width,
 		stateCanvas.height,
