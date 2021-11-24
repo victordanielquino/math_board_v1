@@ -14,6 +14,7 @@ import PaintBorrador from './PaintBorrador';
 import PaintLinea from './PaintLinea';
 import PaintCuadrado from './PaintCuadrado';
 import PaintCuadricula from './PaintCuadricula';
+import PaintPlano from './PaintPlano';
 
 const Canvas = () => {
 	// useContext:
@@ -32,6 +33,7 @@ const Canvas = () => {
 	PaintBorrador('canvas-1');
 	PaintCuadrado('canvas-1');
 	PaintLinea('canvas-1');
+	PaintPlano('canvas-1');
 
 	const updateCanvasWidth = () => setCanvasWidth(window.innerWidth - 75);
 	const updateCanvasHeight = () => setCanvasHeight(window.innerHeight - 90);

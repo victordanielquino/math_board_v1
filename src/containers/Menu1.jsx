@@ -3,7 +3,7 @@ import React from 'react';
 const MenuLapizAux = () => {
 	return (
 		<div>
-			<h1>menu1</h1>
+			<h1>BIENVENIDO A LA PIZARRA DIGITAL WEB</h1>
 		</div>
 	);
 };

@@ -72,6 +72,12 @@ const useInitialState = () => {
 					active: 'cuadradoIcon',
 				});
 				break;
+			case 'planoIcon':
+				setState({
+					...state,
+					active: 'planoIcon',
+				});
+				break;
 			case 'cuadriculaIcon':
 				setState({
 					...state,

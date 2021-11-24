@@ -15,6 +15,10 @@ const PaintLapiz = (id_canvas) => {
 		grosor: stateLapiz.grosor,
 		color: stateLapiz.color,
 		historiaLinea: [],
+		x_min: 2000,
+		x_may: 0,
+		y_min: 2000,
+		y_may: 0,
 	};
 	const lapizLinea = {
 		grosor: stateLapiz.grosor,
@@ -76,6 +80,18 @@ const PaintLapiz = (id_canvas) => {
 		context.lineTo(linea.x_fin, linea.y_fin);
 		context.stroke();
 		context.closePath();
+		// busca cotas minimas X:
+		linea.x_ini < lapizNew.x_min ? (lapizNew.x_min = linea.x_ini) : '';
+		linea.x_fin < lapizNew.x_min ? (lapizNew.x_min = linea.x_fin) : '';
+		// busca cotas maximas X:
+		linea.x_ini > lapizNew.x_may ? (lapizNew.x_may = linea.x_ini) : '';
+		linea.x_fin > lapizNew.x_may ? (lapizNew.x_may = linea.x_fin) : '';
+		// busca cotas minimas Y:
+		linea.y_ini < lapizNew.y_min ? (lapizNew.y_min = linea.y_ini) : '';
+		linea.y_fin < lapizNew.y_min ? (lapizNew.y_min = linea.y_fin) : '';
+		// busca cotas maximas Y:
+		linea.y_ini > lapizNew.y_may ? (lapizNew.y_may = linea.y_ini) : '';
+		linea.y_fin > lapizNew.y_may ? (lapizNew.y_may = linea.y_fin) : '';
 	};
 	const mouseDownLapiz = (e) => {
 		stateLapiz.grosor > 0

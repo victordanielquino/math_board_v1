@@ -7,6 +7,7 @@ import AppContextBorrador from '../context/AppContextBorrador';
 import AppContextLinea from '../context/AppContextLinea';
 import AppContextCuadrado from '../context/AppContextCuadrado';
 import AppContextCuadricula from '../context/AppContextCanvas';
+import AppContextPlano from '../context/AppContextPlano';
 
 import Keyboard from '../containers/Keyboard';
 
@@ -15,7 +16,7 @@ import moverIcon from '../assets/icons/move1.svg';
 import lapizIcon from '../assets/icons/pen1.svg';
 import borradorIcon from '../assets/icons/eraser1.svg';
 import calculadoraIcon from '../assets/icons/calculator.svg';
-import graphIcon from '../assets/icons/graph-up.svg';
+import planoIcon from '../assets/icons/graph-up.svg';
 import plusIcon from '../assets/icons/plus-square.svg';
 import textIcon from '../assets/icons/textarea.svg';
 import zoomInIcon from '../assets/icons/zoom-in.svg';
@@ -38,6 +39,7 @@ const NavIzq = () => {
 	const { updateCuadradoActive } = useContext(AppContextCuadrado);
 	const { updateCuadriculaActive } = useContext(AppContextCuadricula);
 	const { updateLineaActive } = useContext(AppContextLinea);
+	const { updatePlanoActive } = useContext(AppContextPlano);
 
 	// useState:
 	const [toggleKeyboard, setToggleKeyboard] = useState(false);
@@ -52,7 +54,7 @@ const NavIzq = () => {
 		[lineaIcon, 'lineaIcon'],
 		[cuadradoIcon, 'cuadradoIcon'],
 		// [calculadoraIcon, 'calculadoraIcon'],
-		// [graphIcon, 'graphIcon'],
+		[planoIcon, 'planoIcon'],
 		// [imageIcon, 'imageIcon'],
 		// [zoomInIcon, 'zoomInIcon'],
 		// [zoomOutIcon, 'zoomOutIcon'],
@@ -71,6 +73,7 @@ const NavIzq = () => {
 				updateBorradorActive(false);
 				updateLineaActive(false);
 				updateCuadradoActive(false);
+				updatePlanoActive(false);
 				updateCuadriculaActive(false);
 				break;
 			case 'lapizIcon':
@@ -79,6 +82,7 @@ const NavIzq = () => {
 				updateBorradorActive(false);
 				updateLineaActive(false);
 				updateCuadradoActive(false);
+				updatePlanoActive(false);
 				updateCuadriculaActive(false);
 				break;
 			case 'borradorIcon':
@@ -87,6 +91,7 @@ const NavIzq = () => {
 				updateBorradorActive(true);
 				updateLineaActive(false);
 				updateCuadradoActive(false);
+				updatePlanoActive(false);
 				updateCuadriculaActive(false);
 				break;
 			case 'lineaIcon':
@@ -95,6 +100,7 @@ const NavIzq = () => {
 				updateBorradorActive(false);
 				updateLineaActive(true);
 				updateCuadradoActive(false);
+				updatePlanoActive(false);
 				updateCuadriculaActive(false);
 				break;
 			case 'cuadradoIcon':
@@ -103,7 +109,17 @@ const NavIzq = () => {
 				updateBorradorActive(false);
 				updateLineaActive(false);
 				updateCuadradoActive(true);
+				updatePlanoActive(false);
 				updateCuadriculaActive(false);
+				break;
+			case 'planoIcon':
+				updateMoverActive(false);
+				updateLapizActive(false);
+				updateBorradorActive(false);
+				updateLineaActive(false);
+				updateCuadradoActive(false);
+				updatePlanoActive(true);
+				updateCuadriculaActive(true);
 				break;
 			case 'cuadriculaIcon':
 				updateMoverActive(false);
@@ -111,6 +127,7 @@ const NavIzq = () => {
 				updateBorradorActive(false);
 				updateLineaActive(false);
 				updateCuadradoActive(false);
+				updatePlanoActive(false);
 				updateCuadriculaActive(true);
 				break;
 			default:
