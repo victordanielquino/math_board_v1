@@ -10,6 +10,7 @@ const MenuPlano = () => {
 	const { statePlano } = useContext(AppContextPlano);
 
 	// LOGICA
+	console.log('menu plano');
 	// LOGICA END.
 
 	// useEffect

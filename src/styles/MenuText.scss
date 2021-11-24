@@ -1,0 +1,259 @@
+@import 'vars';
+
+.article__menuText {
+	border-radius: 10px;
+	border-bottom: 1px solid var(--very-light-pink);
+	background-color: white;
+	display: flex;
+	padding: 10px;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+
+	&__tamano {
+		border-bottom: 1px solid var(--very-light-pink);
+		background-color: var(--greiTipo0_1);
+		border-radius: 10px;
+		display: flex;
+		align-content: center;
+		justify-content: space-between;
+		padding: 5px 20px;
+		width: 200px;
+		span {
+			padding-top: 2px;
+		}
+		img {
+			outline: 1px solid #95a5a6;
+			background-color: white;
+			width: 20px;
+			border-radius: 2px;
+			cursor: pointer;
+		}
+		input {
+			width: 25px;
+			text-align: right;
+		}
+		img ::hover {
+			background-color: red;
+		}
+
+		.input {
+			width: 40px;
+			text-align: right;
+			padding-right: 3px;
+		}
+		.button {
+			width: 30px;
+		}
+	}
+	&__btnTexto {
+		border-bottom: 1px solid var(--very-light-pink);
+		background-color: var(--greiTipo0_1);
+		border-radius: 10px;
+		display: flex;
+		align-content: center;
+		justify-content: space-between;
+		padding: 5px 20px;
+		width: 20px;
+		img {
+			background-color: white;
+			width: 30px;
+			border-radius: 2px;
+			cursor: pointer;
+		}
+	}
+
+	&__paletaColor {
+		border-radius: 10px;
+		border-bottom: 1px solid var(--very-light-pink);
+		padding: 5px;
+		background-color: var(--greiTipo0_1);
+		width: 250px;
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+		&__container {
+			// outline: 1px solid red;
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+		}
+		.color {
+			outline: 1px solid grey;
+			border-radius: 50%;
+			margin: 0 5px;
+			width: 20px;
+			height: 20px;
+			cursor: pointer;
+		}
+		// .color:hover {
+		// 	outline: 3px solid var(--greiTipo2_4);
+		// 	width: 18px;
+		// 	height: 18px;
+		// }
+		.red {
+			background-color: red;
+		}
+		.black {
+			background-color: black;
+		}
+		.green {
+			background-color: green;
+		}
+		.blue {
+			background-color: blue;
+		}
+		.yellow {
+			background-color: yellow;
+		}
+		.activeColorLinea {
+			outline: 4px solid var(--greiTipo2_3);
+			width: 15px;
+			height: 15px;
+		}
+	}
+}
+
+/* ------------------------- */
+/* POPUP */
+/* ------------------------- */
+
+.overlay {
+	background: rgba(0, 0, 0, 0.3);
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	align-items: center;
+	justify-content: center;
+	display: flex;
+	visibility: hidden;
+}
+
+.overlay.active {
+	visibility: visible;
+}
+
+.popup {
+	background: #f8f8f8;
+	box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
+	border-radius: 3px;
+	font-family: 'Montserrat', sans-serif;
+	padding: 20px;
+	text-align: center;
+	width: 600px;
+
+	transition: 0.3s ease all;
+	transform: scale(0.7);
+	opacity: 0;
+}
+
+.popup .btn-cerrar-popup {
+	font-size: 16px;
+	line-height: 16px;
+	display: block;
+	text-align: right;
+	transition: 0.3s ease all;
+	color: #bbbbbb;
+}
+
+.popup .btn-cerrar-popup:hover {
+	color: #000;
+}
+
+.popup h3 {
+	font-size: 36px;
+	font-weight: 600;
+	margin-bottom: 10px;
+	opacity: 0;
+}
+
+.popup h4 {
+	font-size: 26px;
+	font-weight: 300;
+	margin-bottom: 40px;
+	opacity: 0;
+}
+
+.popup form .contenedor-inputs {
+	opacity: 0;
+}
+
+.popup form .contenedor-inputs input {
+	width: 100%;
+	margin-bottom: 20px;
+	height: 52px;
+	font-size: 18px;
+	line-height: 52px;
+	text-align: center;
+	border: 1px solid #bbbbbb;
+}
+
+.popup form .btn-submit {
+	padding: 0 20px;
+	height: 40px;
+	line-height: 40px;
+	border: none;
+	color: #fff;
+	background: #5e7de3;
+	border-radius: 3px;
+	font-family: 'Montserrat', sans-serif;
+	font-size: 16px;
+	cursor: pointer;
+	transition: 0.3s ease all;
+}
+
+.popup form .btn-submit:hover {
+	background: rgba(94, 125, 227, 0.9);
+}
+
+/* ------------------------- */
+/* ANIMACIONES */
+/* ------------------------- */
+.popup.active {
+	transform: scale(1);
+	opacity: 1;
+}
+.popup.active h3 {
+	animation: entradaTitulo 0.8s ease 0.5s forwards;
+}
+.popup.active h4 {
+	animation: entradaSubtitulo 0.8s ease 0.5s forwards;
+}
+.popup.active .contenedor-inputs {
+	animation: entradaInputs 1s linear 1s forwards;
+}
+
+@keyframes entradaTitulo {
+	from {
+		opacity: 0;
+		transform: translateY(-25px);
+	}
+
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
+@keyframes entradaSubtitulo {
+	from {
+		opacity: 0;
+		transform: translateY(25px);
+	}
+
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
+@keyframes entradaInputs {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
