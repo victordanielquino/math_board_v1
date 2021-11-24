@@ -95,7 +95,7 @@ const MenuText = () => {
 							<input type="text" placeholder="in texto" />
 							<input type="text" placeholder="in texto" />
 						</div>
-						<input type="submit" className="btn-submit" value="Suscribirse" />
+						<input type="submit" className="btn-submit" value="ADD TEXT" />
 					</form>
 				</div>
 			</div>
