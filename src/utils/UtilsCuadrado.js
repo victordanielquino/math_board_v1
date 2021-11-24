@@ -51,11 +51,6 @@ const UC_graficaCuadradoHistoria_menosI = (context, array, i) => {
 	);
 };
 
-// SELECT CUADRADO DE HISTORIA:
-const utilsCuadrado_getCuadrado = () => {
-	let elem = '';
-};
-
 export {
 	utilsCuadrado_graficaCuadrado,
 	utilsCuadrado_graficaCuadradoHistoria,

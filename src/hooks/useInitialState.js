@@ -18,7 +18,7 @@ const initialState = {
 	],
 	active: '',
 	color: 'black',
-	colorFondo: 'red',
+	colorFondo: 'green',
 	grosor: 1,
 };
 const useInitialState = () => {
@@ -60,6 +60,12 @@ const useInitialState = () => {
 					active: 'borradorIcon',
 				});
 				break;
+			case 'lineaIcon':
+				setState({
+					...state,
+					active: 'lineaIcon',
+				});
+				break;
 			case 'cuadradoIcon':
 				setState({
 					...state,
@@ -96,7 +102,6 @@ const useInitialState = () => {
 		});
 	};
 
-	// LAPIZ:
 	return {
 		state,
 		toLowerCase,

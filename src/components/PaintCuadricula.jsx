@@ -2,19 +2,22 @@ import { useEffect, useContext } from 'react';
 
 // CONTEXT:
 import AppContextCanvas from '../context/AppContextCanvas';
-import AppContextLapiz from '../context/AppContextLapiz';
 import AppContextCuadrado from '../context/AppContextCuadrado';
+import AppContextLinea from '../context/AppContextLinea';
+import AppContextLapiz from '../context/AppContextLapiz';
 
 // utils:
 import { utilsCuadricula_graficaCuadricula } from '../utils/UtilsCuadricula';
-import { utilsLapiz_graficaLapizHistoria } from '../utils/UtilsLapiz';
 import { utilsCuadrado_graficaCuadradoHistoria } from '../utils/UtilsCuadrado';
+import { utilsLinea_graficaLineaHistoria } from '../utils/UtilsLinea';
+import { utilsLapiz_graficaLapizHistoria } from '../utils/UtilsLapiz';
 
 const PaintCuadricula = (canvasId) => {
 	// useContext:
 	const { stateCanvas } = useContext(AppContextCanvas);
-	const { stateLapiz } = useContext(AppContextLapiz);
 	const { stateCuadrado } = useContext(AppContextCuadrado);
+	const { stateLinea } = useContext(AppContextLinea);
+	const { stateLapiz } = useContext(AppContextLapiz);
 
 	// LOGICA:
 	let context = '';
@@ -24,6 +27,7 @@ const PaintCuadricula = (canvasId) => {
 			context,
 			stateCuadrado.historiaCuadrado
 		);
+		utilsLinea_graficaLineaHistoria(context, stateLinea.historiaLinea);
 		utilsLapiz_graficaLapizHistoria(context, stateLapiz.historiaLapiz);
 	};
 	// LOGICA END.

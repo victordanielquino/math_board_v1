@@ -1,23 +1,26 @@
 import React, { useContext, useEffect } from 'react';
 
 // CONTEXT:
-import AppContextCuadrado from '../context/AppContextCuadrado';
 import AppContextCanvas from '../context/AppContextCanvas';
+import AppContextCuadrado from '../context/AppContextCuadrado';
+import AppContextLinea from '../context/AppContextLinea';
 import AppContextLapiz from '../context/AppContextLapiz';
 
 // utils:
 import { utilsCuadricula_graficaCuadricula } from '../utils/UtilsCuadricula';
-import { utilsLapiz_graficaLapizHistoria } from '../utils/UtilsLapiz';
 import {
 	utilsCuadrado_graficaCuadrado,
 	utilsCuadrado_graficaCuadradoHistoria,
 } from '../utils/UtilsCuadrado';
+import { utilsLinea_graficaLineaHistoria } from '../utils/UtilsLinea';
+import { utilsLapiz_graficaLapizHistoria } from '../utils/UtilsLapiz';
 
 const PaintCuadrado = (id_canvas) => {
 	// useContext:
+	const { stateCanvas } = useContext(AppContextCanvas);
 	const { stateCuadrado, add_cuadrado_en_historia } =
 		useContext(AppContextCuadrado);
-	const { stateCanvas } = useContext(AppContextCanvas);
+	const { stateLinea } = useContext(AppContextLinea);
 	const { stateLapiz } = useContext(AppContextLapiz);
 
 	// LOGICA:
@@ -82,6 +85,7 @@ const PaintCuadrado = (id_canvas) => {
 			context,
 			stateCuadrado.historiaCuadrado
 		);
+		utilsLinea_graficaLineaHistoria(context, stateLinea.historiaLinea);
 		utilsLapiz_graficaLapizHistoria(context, stateLapiz.historiaLapiz); // grafica historia de lapiz
 	};
 	const mouseDownCuadrado = (e) => {
@@ -103,8 +107,18 @@ const PaintCuadrado = (id_canvas) => {
 		//captura_Pos_Posprev(e);
 		if (mouse.click && mouse.pos_prev.x != 0 && mouse.pos_prev.y != 0) {
 			cuadrado.id = stateCuadrado.historiaCuadrado.length;
-			add_cuadrado_en_historia(cuadrado);
+			if (cuadrado.x_ini > cuadrado.x_fin) {
+				let aux = cuadrado.x_ini;
+				cuadrado.x_ini = cuadrado.x_fin;
+				cuadrado.x_fin = aux;
+			}
+			if (cuadrado.y_ini > cuadrado.y_fin) {
+				let aux = cuadrado.y_ini;
+				cuadrado.y_ini = cuadrado.y_fin;
+				cuadrado.y_fin = aux;
+			}
 			paint();
+			add_cuadrado_en_historia(cuadrado);
 			utilsCuadrado_graficaCuadrado(context, cuadrado);
 		}
 		mouseReinicia();

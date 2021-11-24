@@ -11,6 +11,7 @@ import '../styles/Canvas.scss';
 import PaintMover from './PaintMover';
 import PainLapiz from '../components/PaintLapiz';
 import PaintBorrador from './PaintBorrador';
+import PaintLinea from './PaintLinea';
 import PaintCuadrado from './PaintCuadrado';
 import PaintCuadricula from './PaintCuadricula';
 
@@ -26,10 +27,11 @@ const Canvas = () => {
 	// update_width_height;
 
 	PaintCuadricula('canvas-1');
-	PaintMover('canvas-1', canvasWidth, canvasHeight);
+	PaintMover('canvas-1');
 	PainLapiz('canvas-1');
 	PaintBorrador('canvas-1');
 	PaintCuadrado('canvas-1');
+	PaintLinea('canvas-1');
 
 	const updateCanvasWidth = () => setCanvasWidth(window.innerWidth - 75);
 	const updateCanvasHeight = () => setCanvasHeight(window.innerHeight - 90);
